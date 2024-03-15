@@ -1,0 +1,115 @@
+{% extends "base.html" %} {% block title %}Finance Tracker - Home{% endblock %} {% block content
+%}
+<h1 align="center">Expense Tracker</h1>
+<form method="POST">
+  <div class="row">
+    <!-- Main Category Dropdown -->
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="mainCategory">Main Category:</label>
+        <select name="mainCategory" id="mainCategory" class="form-control">
+          <option value="">Select Main Category</option>
+          <option value="Food & Drinks">Food & Drinks</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Housing">Housing</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Life & Entertainment">Life & Entertainment</option>
+          <option value="Communication, PC">Communication, PC</option>
+          <option value="Financial expenses">Financial expenses</option>
+          <option value="Investments">Investments</option>
+          <option value="Income">Income</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Subcategory Dropdown -->
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="subCategory">Subcategory:</label>
+        <select name="subCategory" id="subCategory" class="form-control">
+          <option value="">Select Subcategory</option>
+          <!-- Subcategories will be populated dynamically using JavaScript -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input
+          type="date"
+          name="date"
+          id="date"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Add Expense</button>
+  </div>
+</form>
+<br />
+
+<h2 align="center">Expenses List</h2>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Sub-Category</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Date</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody id="expense-table-body">
+      {% for expense in user.expenses %}
+      <tr id="{{ expense.id }}">
+        <td class="align-middle">{{ expense.category }}</td>
+        <td class="align-middle">{{ expense.sub_category }}</td>
+        <td class="align-middle">{{ expense.amount }} {{ user.currency }}</td>
+        <td class="align-middle">{{ expense.date.strftime('%Y-%m-%d') }}</td>
+        <td class="align-middle">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onClick="deleteExpense('{{ expense.id }}')"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Balance:</td>
+        <td id="total-amount"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+
+{% endblock %}
