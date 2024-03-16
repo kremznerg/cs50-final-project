@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Expense
-from . import db
+from models import Expense
+from __init__ import db
 from datetime import datetime
 
 
@@ -31,7 +31,7 @@ def home():
             db.session.commit()
             flash('Expense added!', category='success')
 
-    return render_template("home.html", user=current_user)
+    return render_template("index.html", user=current_user)
 
 @views.route('/delete-expense', methods=['POST'])
 def delete_expense():  
